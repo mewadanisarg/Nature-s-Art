@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+    <title>Nature's Art 🏞🏔</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital@1&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./Web-icon.ico" />
+</head>
+<body style="overflow: auto;">
+<div>
+        <div id="main">
+            <div class="line-1 anim-typewriter">
+                <h1 style="font-family: 'Caveat', cursive; font-size: 50px; color: antiquewhite;">Nature's Art 🏔</h1>
+            </div>
+            <modal-component :image-id="imageId" v-if="imageId" @close="closeModal" ></modal-component>
+            <form>
+                <div class="user-info">
+                    <input v-model="title" type="text" name="title" placeholder="title"  required>
+                    <input v-model="description" type="text" name="description" placeholder="description" required>
+                    <input v-model="username" type="text" name="username" placeholder="username" required>
+                    <label class="label">
+                        <p>Choose File</p>
+                        <input  @change="handleChange" type="file" name="title" accept="image/*" required>
+                    </label>
+                    <button class="submit-btn" @click.prevent="submitFile" >Submit</button> 
+                </div>
+            <h2 style="font-family: 'Caveat', cursive; font-size: 35px;">Latest Images...</h2>
+            </form>
+            <div class="images-grid">
+                <figure class="image-frame" v-for="image in images" >
+                    <a :href="'#' + image.id" style="text-decoration: none;">
+                        <img v-bind:src="image.url" alt="image" v-bind:key="image.id">
+                        <figcaption>{{image.title}}</figcaption>
+                    </a>
+                        
+                </figure>
+            </div>
+            
+            <div class="more-container">
+                <button v-if="!seen" @click.prevent="loadMoreImages">More Images</button>
+            </div>
+        </div> <!-- This is where #main closes --> 
+
+        <!-- Our Components go outside of #main -->
+
+    <script id="modal-template" type="text/x-template">
+        <div class="modal-container">
+                <span @click="closeModal" class="close-span" style="position: absolute; top: 6px; right: 10px; cursor: pointer; color: white; transition-duration: 0.2s;">Close</span>
+                
+                <div class="modal-text">
+
+                    <div class="modal-image">
+                        <div class="previous-btn" @click.prevent="previousImage">
+                            <button style="display: contents;">◀</button> 
+                        </div>
+                        <img class="image-modal" id="modal-image" :src="url" alt="image" style="object-fit: cover; width: 500px; height: 500px; margin-right: 5px; margin-left: 5px;"> <br>
+                        <div class="next-btn" @click.prevent="nextImage">
+                            <button style="display: contents;">▶</button>
+                        </div>
+                    </div>
+                    <p v-if="title">Title: {{title}}</p> <br>
+                    <p v-if="description"> Description: {{description}}</p> <br>
+                    <p v-if="username">Uploaded by <strong><u>{{username}}</u></strong></p><br>
+                    <p v-if>Added on {{created_at}}</p>
+                </div>
+                <!-- comment Component -->
+            <comment-component v-if="imageId" :image-id="imageId"></comment-component>    
+        </div>
+    </script>
+
+    <!-- Comment Template -->
+
+
+    <script id="comment-template" type="text/x-template" >
+        <div class="comment-container">
+            
+            <form class="commenting-form" style="z-index: 4;">
+                <h4 style="color: white; font-size: 18px;">Add a comment</h4>
+                <label style="color: white; font-size: 18px;">Username: <input v-model="username" type="text" name="username" style=" width: 200px; height: 30px;" placeholder="username"/></label>
+                <label style="color: white; font-size: 18px;">Comment: <input v-model="comment" type="text" name="comment" style="width: 200px; height:30px;" placeholder="insert comment"></label>
+                <button type="submit" @click.prevent="addComment" style="width: 130px;">Add Comment</button> <br>
+            </form>
+            <div class="comments" v-if="comments.length > 0">
+                <div v-for="comment in comments" v-bind:key="comment.id" style="width: 28%">
+                    <span style="color: white; font-size: 18px;"> Added on: {{ new Date(comment.created_at).toUTCString().replace("GMT", "")}}</span>
+                    <p style="color: white; font-size: 18px;">Commented by: {{ comment.username }}</p>
+                    <p style="font-size: 18px;">Comment: {{ comment.comment_text }}</p> <br/>
+                </div>
+            </div>
+        </div>
+    </script>
+    <footer style=" padding-left: 10px; padding-bottom: 10px;">&copy; Nisarg Mewada, ©Spiced Academy2021-22🎯.</footer>
+</div>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<script src="/js/script.js"></script>   
+</body>
+</html>

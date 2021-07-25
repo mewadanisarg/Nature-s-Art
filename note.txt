@@ -1,0 +1,5 @@
+Update need to done after BootCamp
+1. Add Bonus features
+2. Restyle (Flip card CSS)
+3. Remove bug from morebutton, when reach at the end of the images, it should disappear..! 
+4. Restyle and Choose Photo (file selecting button) should show selected file
